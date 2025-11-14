@@ -19,7 +19,7 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final List<TextEditingController> _otpControllers = List.generate(
     4,
-        (index) => TextEditingController(),
+    (index) => TextEditingController(),
   );
   final List<FocusNode> _focusNodes = List.generate(4, (index) => FocusNode());
   String _timerText = '00:30';
@@ -29,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void initState() {
     super.initState();
     _startTimer();
-    // Show OTP popup after screen loads
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showOtpPopup();
     });
@@ -40,7 +40,6 @@ class _OtpScreenState extends State<OtpScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        // Auto close after 4 seconds
         Future.delayed(const Duration(seconds: 4), () {
           if (Navigator.canPop(context)) {
             Navigator.of(context).pop();
@@ -60,10 +59,7 @@ class _OtpScreenState extends State<OtpScreen> {
               children: [
                 const Text(
                   'Your OTP',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -123,18 +119,14 @@ class _OtpScreenState extends State<OtpScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top spacing
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.black,
-              ),
-            ),
+            Expanded(flex: 3, child: Container(color: Colors.black)),
 
-            // Bottom content card
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 30.0,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -174,12 +166,11 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       const SizedBox(height: 30),
 
-                      // OTP Input Fields
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: List.generate(
                           4,
-                              (index) => Container(
+                          (index) => Container(
                             width: 65,
                             height: 65,
                             decoration: BoxDecoration(
@@ -189,7 +180,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                 color: _otpControllers[index].text.isNotEmpty
                                     ? Color(0xFFE91E63)
                                     : Colors.white.withOpacity(0.2),
-                                width: _otpControllers[index].text.isNotEmpty ? 2 : 1,
+                                width: _otpControllers[index].text.isNotEmpty
+                                    ? 2
+                                    : 1,
                               ),
                             ),
                             child: TextField(
@@ -212,7 +205,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                 contentPadding: EdgeInsets.zero,
                               ),
                               onChanged: (value) {
-                                setState(() {}); // Rebuild to update border color
+                                setState(
+                                  () {},
+                                ); // Rebuild to update border color
                                 if (value.length == 1) {
                                   if (index < 3) {
                                     _focusNodes[index + 1].requestFocus();
@@ -230,7 +225,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       const SizedBox(height: 25),
 
-                      // Resend OTP with timer
                       Center(
                         child: GestureDetector(
                           onTap: _resendOTP,
@@ -267,7 +261,6 @@ class _OtpScreenState extends State<OtpScreen> {
                     ],
                   ),
 
-                  // Verify OTP button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -277,7 +270,6 @@ class _OtpScreenState extends State<OtpScreen> {
                             .join();
 
                         if (enteredOtp.length == 4) {
-                          // Verify OTP against the correct OTP
                           if (enteredOtp == widget.correctOtp) {
                             Navigator.pushReplacement(
                               context,

@@ -19,18 +19,14 @@ class _NumberScreenState extends State<NumberScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top spacing
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.black,
-              ),
-            ),
+            Expanded(flex: 3, child: Container(color: Colors.black)),
 
-            // Bottom content card
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 30.0,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -62,7 +58,6 @@ class _NumberScreenState extends State<NumberScreen> {
                       ),
                       const SizedBox(height: 25),
 
-                      // Phone number input
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.15),
@@ -85,7 +80,10 @@ class _NumberScreenState extends State<NumberScreen> {
                               fontSize: 14,
                             ),
                             prefixIcon: Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 10),
+                              padding: const EdgeInsets.only(
+                                left: 15,
+                                right: 10,
+                              ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -113,12 +111,17 @@ class _NumberScreenState extends State<NumberScreen> {
                           ),
                           keyboardType: TextInputType.phone,
                           maxLength: 10,
-                          buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
+                          buildCounter:
+                              (
+                                context, {
+                                required currentLength,
+                                required isFocused,
+                                maxLength,
+                              }) => null,
                         ),
                       ),
                       const SizedBox(height: 15),
 
-                      // Terms checkbox
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -132,14 +135,17 @@ class _NumberScreenState extends State<NumberScreen> {
                                   _isChecked = value ?? false;
                                 });
                               },
-                              fillColor: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.selected)) {
-                                    return Color(0xFFE91E63); // Pink
-                                  }
-                                  return Colors.white.withOpacity(0.3);
-                                },
-                              ),
+                              fillColor:
+                                  MaterialStateProperty.resolveWith<Color>((
+                                    Set<MaterialState> states,
+                                  ) {
+                                    if (states.contains(
+                                      MaterialState.selected,
+                                    )) {
+                                      return Color(0xFFE91E63); // Pink
+                                    }
+                                    return Colors.white.withOpacity(0.3);
+                                  }),
                               side: BorderSide(
                                 color: Colors.white.withOpacity(0.5),
                                 width: 1.5,
@@ -165,35 +171,46 @@ class _NumberScreenState extends State<NumberScreen> {
                     ],
                   ),
 
-                  // Send OTP button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _isChecked ? () {
-                        if (_phoneController.text.length == 10) {
-                          // Generate random 4-digit OTP
-                          String otp = (1000 + (9000 * (DateTime.now().millisecondsSinceEpoch % 10000) / 10000).floor()).toString();
+                      onPressed: _isChecked
+                          ? () {
+                              if (_phoneController.text.length == 10) {
+                                // Generate random 4-digit OTP
+                                String otp =
+                                    (1000 +
+                                            (9000 *
+                                                    (DateTime.now()
+                                                            .millisecondsSinceEpoch %
+                                                        10000) /
+                                                    10000)
+                                                .floor())
+                                        .toString();
 
-                          // Navigate to OTP screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OtpScreen(
-                                phoneNumber: _phoneController.text,
-                                correctOtp: otp,
-                              ),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Please enter a valid 10-digit mobile number'),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      } : null,
+                                // Navigate to OTP screen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OtpScreen(
+                                      phoneNumber: _phoneController.text,
+                                      correctOtp: otp,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Please enter a valid 10-digit mobile number',
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFE91E63), // Pink
                         disabledBackgroundColor: Colors.grey.withOpacity(0.3),
